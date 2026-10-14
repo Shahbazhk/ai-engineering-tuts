@@ -1,0 +1,55 @@
+# Full local stack: the course app, Ollama with the two course models, and PostgreSQL + pgvector (Phase 8 exercises).
+#   docker compose up -d        then open http://localhost:8080  (APP_PORT, PG_PORT, OLLAMA_PORT override host ports)
+# First start downloads ~2.5 GB of models; the app works (keyword search, lessons, quizzes) before they finish.
+services:
+  ollama:
+    image: ollama/ollama:0.40.4
+    ports:
+      - "${OLLAMA_PORT:-11434}:11434"
+    volumes:
+      - ollama:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+  ollama-models:
+    image: ollama/ollama:0.40.4
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: ollama:11434
+    entrypoint: ["/bin/sh", "-c", "ollama pull llama3.2 && ollama pull nomic-embed-text"]
+    restart: "no"
+
+  postgres:
+    image: pgvector/pgvector:0.8.6-pg17
+    environment:
+      POSTGRES_DB: course
+      POSTGRES_USER: course
+      POSTGRES_PASSWORD: course   # local development only
+    ports:
+      - "${PG_PORT:-5432}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_BASE_URL: http://ollama:11434
+      AI_CHAT_PROVIDER: ollama
+      AI_EMBEDDING_PROVIDER: ollama
+    ports:
+      - "${APP_PORT:-8080}:8080"
+    volumes:
+      - coursedata:/course/data
+
+volumes:
+  ollama:
+  pgdata:
+  coursedata:

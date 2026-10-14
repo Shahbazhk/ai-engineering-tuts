@@ -1,0 +1,3 @@
+title: NLP, Tokenization & Embeddings
+summary: How text becomes numbers — TF-IDF, a BPE tokenizer, word2vec, sentence embeddings and running embedding models in production Java.
+hours: 10 h

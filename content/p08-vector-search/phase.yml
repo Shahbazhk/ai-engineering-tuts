@@ -1,0 +1,3 @@
+title: Vector Databases & Search
+summary: Build exact search, IVF and HNSW indexes, measure recall against brute force, fuse BM25 with vectors, diversify with MMR, and use Spring AI's VectorStore with permission filters.
+hours: 12 h

@@ -1,0 +1,180 @@
+- term: Advisor
+  definition: Spring AI's interceptor around ChatClient calls; memory, RAG, tool loops, logging and guardrails are advisors.
+  lesson: p06-llms-in-practice/02-spring-ai-chatclient
+- term: Agent
+  definition: An LLM that decides its own next action (which tool, when to stop) in a loop with feedback from its environment.
+  lesson: p10-agents/01-workflows-vs-agents
+- term: AiServices
+  definition: LangChain4j's declarative style — a Java interface implemented at run time by a proxy that calls the model.
+  lesson: p06-llms-in-practice/03-langchain4j-aiservices
+- term: Attention
+  definition: softmax(QKᵀ/√d)·V — each position takes a weighted average of values, weighted by query–key similarity.
+  lesson: p05-transformers/02-self-attention
+- term: Autograd
+  definition: Automatic differentiation; records operations in a graph and computes gradients with the chain rule in reverse.
+  lesson: p03-neural-networks/01-autograd-engine
+- term: Backpropagation
+  definition: Reverse-mode autodiff applied to a neural network to get the gradient of the loss for every parameter.
+  lesson: p03-neural-networks/01-autograd-engine
+- term: BM25
+  definition: Probabilistic keyword ranking function with term-frequency saturation and length normalisation; the default in Lucene.
+  lesson: p08-vector-search/04-hybrid-search
+- term: BPE
+  definition: Byte-Pair Encoding — a tokenizer that learns subword units by repeatedly merging the most frequent adjacent pair.
+  lesson: p04-nlp-embeddings/02-bpe-tokenizer
+- term: Chain-of-thought
+  definition: Prompting the model to reason step by step before giving a final answer.
+  lesson: p07-prompt-context/02-prompting-patterns
+- term: Chunking
+  definition: Splitting documents into retrievable units; size and boundaries decide what retrieval can find.
+  lesson: p09-rag/02-ingestion-and-chunking
+- term: Circuit breaker
+  definition: Fails calls fast after repeated failures, then lets a trial call through after a cool-down.
+  lesson: p14-llmops/02-resilience
+- term: Context engineering
+  definition: Deciding what information the model sees at each step and packing it into a token budget.
+  lesson: p07-prompt-context/04-context-engineering
+- term: Context window
+  definition: The maximum number of tokens (prompt plus output) a model can process in one call.
+  lesson: p05-transformers/03-multi-head-and-positions
+- term: Cosine similarity
+  definition: Dot product of two vectors divided by their lengths; measures direction, used to compare embeddings.
+  lesson: p01-math/01-vectors
+- term: Cross-encoder
+  definition: A reranking model that reads query and document together and outputs a relevance score.
+  lesson: p08-vector-search/06-reranking-and-mmr
+- term: Cross-entropy
+  definition: The loss −log p(correct class); minimised when the model puts probability on the right answer. Trains every LLM.
+  lesson: p01-math/05-softmax-and-cross-entropy
+- term: Distillation
+  definition: Training a smaller student model on outputs of a larger teacher model.
+  lesson: p13-fine-tuning/06-serving-and-distillation
+- term: Embedding
+  definition: A fixed-length vector representing text (or images) such that similar meanings are close together.
+  lesson: p04-nlp-embeddings/04-sentence-embeddings
+- term: Eval set
+  definition: A versioned dataset of inputs with expected outcomes or rubrics, used to measure an AI system's quality.
+  lesson: p12-evals/02-datasets-and-metrics
+- term: Faithfulness
+  definition: The share of claims in an answer that are supported by the retrieved context.
+  lesson: p12-evals/04-rag-evaluation
+- term: Few-shot prompting
+  definition: Including worked examples in the prompt so the model imitates their format and behaviour.
+  lesson: p07-prompt-context/02-prompting-patterns
+- term: Fine-tuning
+  definition: Further training a pretrained model on task-specific examples to change its behaviour.
+  lesson: p13-fine-tuning/01-when-to-fine-tune
+- term: GGUF
+  definition: File format for (usually quantised) LLM weights plus metadata, used by llama.cpp, Ollama and Jlama.
+  lesson: p03-neural-networks/07-deep-learning-in-java
+- term: Gradient descent
+  definition: Iteratively updating parameters in the direction that reduces the loss, scaled by a learning rate.
+  lesson: p01-math/06-gradient-descent
+- term: Grouped-query attention
+  definition: Several query heads share each key/value head, shrinking the KV cache.
+  lesson: p05-transformers/07-modern-llm-architecture
+- term: Guardrail
+  definition: A deterministic or model-based check on inputs or outputs that blocks, redacts or escalates unsafe content.
+  lesson: p15-security-governance/04-output-guardrails
+- term: Hallucination
+  definition: Fluent model output that is not supported by facts or the provided sources.
+  lesson: p09-rag/03-rag-from-scratch
+- term: HNSW
+  definition: Hierarchical Navigable Small World — a graph index for fast approximate nearest-neighbour search.
+  lesson: p08-vector-search/03-hnsw
+- term: Hybrid search
+  definition: Combining keyword (BM25) and vector retrieval, typically with reciprocal rank fusion.
+  lesson: p08-vector-search/04-hybrid-search
+- term: HyDE
+  definition: Hypothetical Document Embeddings — embed a model-written hypothetical answer instead of the question.
+  lesson: p09-rag/05-advanced-rag
+- term: IVF
+  definition: Inverted-file index; clusters vectors with k-means and searches only the nearest clusters.
+  lesson: p08-vector-search/02-ivf-index
+- term: KV cache
+  definition: Stored keys and values of previous tokens, reused so each new token costs O(n) instead of O(n²).
+  lesson: p05-transformers/05-generation-and-kv-cache
+- term: LLM-as-judge
+  definition: Using a model with a rubric to grade outputs where deterministic metrics fall short.
+  lesson: p12-evals/03-llm-as-judge
+- term: LoRA
+  definition: Low-Rank Adaptation — fine-tuning by learning small matrices B·A added to frozen weights.
+  lesson: p13-fine-tuning/02-lora-from-scratch
+- term: MCP
+  definition: Model Context Protocol — JSON-RPC protocol connecting AI hosts to servers exposing tools, resources and prompts.
+  lesson: p11-mcp/01-mcp-concepts
+- term: MMR
+  definition: Maximal Marginal Relevance — selects results that are relevant but not redundant.
+  lesson: p08-vector-search/06-reranking-and-mmr
+- term: Mixture of experts
+  definition: Architecture that routes each token to a few of many expert feed-forward networks.
+  lesson: p05-transformers/07-modern-llm-architecture
+- term: nDCG
+  definition: Normalised Discounted Cumulative Gain — ranking metric rewarding the most relevant results at the top.
+  lesson: p12-evals/02-datasets-and-metrics
+- term: Perplexity
+  definition: exp(average cross-entropy); "the model is as uncertain as choosing among N tokens".
+  lesson: p01-math/05-softmax-and-cross-entropy
+- term: Prompt caching
+  definition: Provider-side reuse of the computed prefix of identical prompt beginnings, at reduced price and latency.
+  lesson: p07-prompt-context/05-prompt-caching-and-cost
+- term: Prompt injection
+  definition: Instructions hidden in user input or retrieved content that hijack the model's behaviour.
+  lesson: p15-security-governance/02-prompt-injection
+- term: QLoRA
+  definition: LoRA fine-tuning on a base model loaded in 4-bit precision to save memory.
+  lesson: p13-fine-tuning/02-lora-from-scratch
+- term: Quantisation
+  definition: Storing weights in fewer bits (8, 4) with scale factors to reduce memory and speed up inference.
+  lesson: p13-fine-tuning/05-quantisation
+- term: RAG
+  definition: Retrieval-Augmented Generation — retrieve relevant documents and put them in the prompt to ground the answer.
+  lesson: p09-rag/01-rag-architecture
+- term: ReAct
+  definition: Agent protocol alternating Thought, Action and Observation until a Final Answer.
+  lesson: p10-agents/02-react-agent-from-scratch
+- term: Recall@k
+  definition: Fraction of relevant items that appear in the top k results.
+  lesson: p12-evals/02-datasets-and-metrics
+- term: Reciprocal Rank Fusion
+  definition: Merges ranked lists by summing 1/(k + rank) per document; needs no score normalisation.
+  lesson: p08-vector-search/04-hybrid-search
+- term: RoPE
+  definition: Rotary position embedding — rotates queries and keys by position so scores depend on relative distance.
+  lesson: p05-transformers/03-multi-head-and-positions
+- term: Semantic cache
+  definition: Reuses answers for questions whose embeddings are very similar, within a strict scope.
+  lesson: p14-llmops/04-semantic-caching
+- term: Softmax
+  definition: Turns a vector of scores into probabilities that are positive and sum to one.
+  lesson: p01-math/05-softmax-and-cross-entropy
+- term: Structured output
+  definition: Making the model return data that parses into a typed object, e.g. a Java record via JSON schema.
+  lesson: p06-llms-in-practice/05-structured-output
+- term: Temperature
+  definition: Divides logits before softmax; low values make sampling near-greedy, high values more random.
+  lesson: p05-transformers/06-decoding-strategies
+- term: Token
+  definition: The unit models read and write — a word, subword or byte sequence; the unit of cost and context limits.
+  lesson: p04-nlp-embeddings/02-bpe-tokenizer
+- term: Tool calling
+  definition: The model returns a structured request to run a function; the application executes it and returns the result.
+  lesson: p06-llms-in-practice/06-tool-calling
+- term: Top-p (nucleus) sampling
+  definition: Sample only from the smallest set of tokens whose cumulative probability reaches p.
+  lesson: p05-transformers/06-decoding-strategies
+- term: Transformer
+  definition: Architecture of stacked attention and feed-forward blocks with residual connections and normalisation.
+  lesson: p05-transformers/04-transformer-block-and-gpt
+- term: Vector API
+  definition: JDK incubator API for SIMD — one instruction processes several numbers at once.
+  lesson: p01-math/07-vector-api-performance
+- term: Vector store
+  definition: A database that indexes embeddings for nearest-neighbour search with metadata filters.
+  lesson: p08-vector-search/05-vector-stores-in-spring
+- term: Virtual threads
+  definition: Lightweight JVM threads that make blocking I/O cheap — ideal for slow LLM calls.
+  lesson: p14-llmops/06-streaming-and-scaling
+- term: Word2vec
+  definition: Learns word vectors by predicting context words (skip-gram) with negative sampling.
+  lesson: p04-nlp-embeddings/03-word-embeddings

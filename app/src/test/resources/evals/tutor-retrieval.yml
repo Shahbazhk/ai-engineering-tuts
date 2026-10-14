@@ -1,0 +1,57 @@
+# Retrieval eval for the AI Tutor: each question should retrieve (a section of) the expected lesson in the top 5.
+- q: How does a model choose the next token with temperature and top-p?
+  lesson: p05-transformers/06-decoding-strategies
+- q: Why do we divide attention scores by the square root of the key dimension?
+  lesson: p05-transformers/02-self-attention
+- q: What does the KV cache store and why is the first token slow?
+  lesson: p05-transformers/05-generation-and-kv-cache
+- q: How do I compute cosine similarity between embeddings?
+  lesson: p01-math/01-vectors
+- q: How does a BPE tokenizer learn merges?
+  lesson: p04-nlp-embeddings/02-bpe-tokenizer
+- q: How does HNSW search a graph of vectors and what does efSearch do?
+  lesson: p08-vector-search/03-hnsw
+- q: How do I fuse BM25 and vector results with reciprocal rank fusion?
+  lesson: p08-vector-search/04-hybrid-search
+- q: How should I chunk documents with heading paths for RAG?
+  lesson: p09-rag/02-ingestion-and-chunking
+- q: How do I check Liferay permissions for retrieved web content?
+  lesson: p09-rag/06-rag-over-liferay
+- q: How does the Spring AI RetrievalAugmentationAdvisor work?
+  lesson: p09-rag/04-rag-with-spring-ai
+- q: How do I use @Tool methods with ChatClient tool calling?
+  lesson: p06-llms-in-practice/06-tool-calling
+- q: How do I get a Java record from a model with structured output?
+  lesson: p06-llms-in-practice/05-structured-output
+- q: How do LangChain4j AiServices interfaces work?
+  lesson: p06-llms-in-practice/03-langchain4j-aiservices
+- q: What are the stopping conditions of a ReAct agent loop?
+  lesson: p10-agents/02-react-agent-from-scratch
+- q: Which workflow patterns exist besides autonomous agents, like routing and orchestrator-workers?
+  lesson: p10-agents/05-workflow-patterns
+- q: What does an MCP server answer to tools/list and tools/call over JSON-RPC?
+  lesson: p11-mcp/02-mcp-from-scratch
+- q: How do I evaluate an LLM judge for position bias?
+  lesson: p12-evals/03-llm-as-judge
+- q: How is RAG faithfulness different from context recall?
+  lesson: p12-evals/04-rag-evaluation
+- q: How does LoRA add low-rank matrices to frozen weights?
+  lesson: p13-fine-tuning/02-lora-from-scratch
+- q: Why does 4-bit quantisation need block-wise scales?
+  lesson: p13-fine-tuning/05-quantisation
+- q: How do retries with jitter and circuit breakers protect LLM calls?
+  lesson: p14-llmops/02-resilience
+- q: How do I rate limit tenants by tokens with a token bucket?
+  lesson: p14-llmops/03-rate-limiting-and-cost-control
+- q: How do I redact emails and IBANs before sending prompts?
+  lesson: p15-security-governance/03-personal-data-protection
+- q: Which EU AI Act tier applies to CV screening?
+  lesson: p15-security-governance/05-governance-frameworks
+- q: How do I estimate an AI project with Monte Carlo instead of PERT?
+  lesson: p17-delivery-leadership/02-estimating-under-uncertainty
+- q: What is the Adam optimiser and AdamW weight decay?
+  lesson: p03-neural-networks/05-optimizers
+- q: How do I build an autograd engine with a Value class?
+  lesson: p03-neural-networks/01-autograd-engine
+- q: What is overfitting and how does ridge regularisation help?
+  lesson: p02-classical-ml/05-overfitting-and-regularization

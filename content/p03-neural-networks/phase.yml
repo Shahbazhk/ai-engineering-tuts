@@ -1,0 +1,3 @@
+title: Neural Networks From Scratch
+summary: Build automatic differentiation, neurons, layers, tensors, Adam and a full training loop in plain Java — then map every piece onto DJL and PyTorch concepts.
+hours: 14 h

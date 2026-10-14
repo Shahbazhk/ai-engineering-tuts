@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('Case studies')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container narrow">
+    <h1>Architecture case studies</h1>
+    <p class="lead">End-to-end AI system designs: requirements, architecture, trade-offs, failure modes, and how to build them in Spring.</p>
+    <ol class="lesson-list">
+        <li th:each="l : ${studies}" th:class="${done.contains(l.id)} ? 'done' : ''">
+            <a th:href="${l.url()}">
+                <span class="check" th:text="${done.contains(l.id)} ? '✓' : '◆'">◆</span>
+                <span class="lesson-text">
+                    <strong th:text="${l.title}">Case</strong>
+                    <span th:text="${l.summary}">summary</span>
+                </span>
+                <span class="lesson-meta"><span th:text="${l.minutes} + ' min'"></span></span>
+            </a>
+        </li>
+    </ol>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,3 @@
+title: Evaluation & Testing of AI Systems
+summary: Eval-driven development — datasets, retrieval and text metrics, LLM-as-judge, RAG metrics, testing non-deterministic code, and evals as CI quality gates.
+hours: 10 h

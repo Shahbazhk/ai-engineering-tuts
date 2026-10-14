@@ -1,0 +1,3 @@
+title: LLMs in Practice with Spring AI & LangChain4j
+summary: Choose models on cost and latency, then build with ChatClient and AiServices — templates, streaming, structured output, tool calling and memory — all tested offline with fakes.
+hours: 12 h

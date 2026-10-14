@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>dev.aieng</groupId>
+        <artifactId>ai-engineering-java</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>lessons</artifactId>
+    <packaging>pom</packaging>
+    <name>Lesson code (one module per phase)</name>
+
+    <modules>
+        <module>p00-setup</module>
+        <module>p01-math</module>
+        <module>p02-classical-ml</module>
+        <module>p03-neural-networks</module>
+        <module>p04-nlp-embeddings</module>
+        <module>p05-transformers</module>
+        <module>p06-llms-in-practice</module>
+        <module>p07-prompt-context</module>
+        <module>p08-vector-search</module>
+        <module>p09-rag</module>
+        <module>p10-agents</module>
+        <module>p11-mcp</module>
+        <module>p12-evals</module>
+        <module>p13-fine-tuning</module>
+        <module>p14-llmops</module>
+        <module>p15-security-governance</module>
+        <module>p17-delivery-leadership</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('Glossary')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container narrow">
+    <h1>Glossary</h1>
+    <input type="search" id="filter" placeholder="Filter terms…" class="filter" aria-label="Filter glossary" data-filter=".glossary > div">
+    <dl class="glossary">
+        <div th:each="e : ${entries}">
+            <dt th:id="${#strings.replace(#strings.toLowerCase(e.term), ' ', '-')}" th:text="${e.term}">Term</dt>
+            <dd>
+                <span th:text="${e.definition}">definition</span>
+                <a th:if="${!e.lesson.isEmpty()}" th:href="${lessons[e.lesson].url()}" class="small"
+                   th:text="'→ ' + ${lessons[e.lesson].title}">lesson</a>
+            </dd>
+        </div>
+    </dl>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

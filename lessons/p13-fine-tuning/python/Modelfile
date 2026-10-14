@@ -1,0 +1,8 @@
+# Serve a LoRA adapter on top of its base model with Ollama:
+#   ollama create support-triage -f Modelfile
+#   ollama run support-triage
+# The adapter must have been trained on exactly this base model (same architecture and weights).
+FROM llama3.2:1b
+ADAPTER ./adapter
+PARAMETER temperature 0
+SYSTEM You triage support tickets for an enterprise portal. Reply with JSON only.

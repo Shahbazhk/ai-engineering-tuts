@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('Roadmap')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container">
+    <section class="hero">
+        <h1>AI Engineering From Scratch <span class="accent">— Java &amp; Spring Edition</span></h1>
+        <p class="lead">From vectors and gradients to transformers, RAG, agents, MCP and production LLMOps — every idea built
+            by hand in plain Java first, then with Spring AI and LangChain4j, then hardened for the enterprise.</p>
+        <div class="stats">
+            <div><strong th:text="${#lists.size(phases)}">19</strong><span>phases</span></div>
+            <div><strong th:text="${summary.total}">0</strong><span>lessons</span></div>
+            <div><strong th:text="${totalHours}">0</strong><span>hours</span></div>
+            <div><strong th:text="${summary.completed}">0</strong><span>completed</span></div>
+        </div>
+        <div class="progress"><div class="bar" th:style="'width:' + ${summary.percent} + '%'"></div></div>
+        <p th:if="${next != null}" class="continue">
+            Continue with <a th:href="${next.url()}" th:text="${next.title}">next</a>
+            <span class="small" th:text="'(' + ${next.minutes} + ' min)'"></span>
+        </p>
+    </section>
+
+    <section class="phase-grid">
+        <a th:each="p : ${phases}" class="phase-card" th:href="@{/phases/{id}(id=${p.id})}"
+           th:with="doneCount=${phaseDone[p.id]}">
+            <div class="phase-num" th:text="${p.number < 10 ? '0' + p.number : p.number}">00</div>
+            <div class="phase-body">
+                <h3 th:text="${p.title}">Phase</h3>
+                <p th:text="${p.summary}">summary</p>
+                <div class="phase-meta">
+                    <span th:text="${#lists.size(p.lessons)} + ' lessons'"></span>
+                    <span th:text="${p.hours}"></span>
+                    <span th:text="${doneCount} + '/' + ${#lists.size(p.lessons)} + ' done'"></span>
+                </div>
+                <div class="progress thin">
+                    <div class="bar" th:style="'width:' + (${#lists.isEmpty(p.lessons)} ? 0 : ${doneCount * 100 / #lists.size(p.lessons)}) + '%'"></div>
+                </div>
+            </div>
+        </a>
+    </section>
+
+    <form method="post" action="/progress/reset" class="reset" onsubmit="return confirm('Reset all lesson progress and quiz scores?')">
+        <button class="btn link" type="submit">Reset all progress</button>
+    </form>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

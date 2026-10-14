@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head(${phase.title})}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container narrow">
+    <p class="crumbs"><a href="/">Roadmap</a> ›
+        <span th:text="'Phase ' + ${phase.number}">Phase</span></p>
+    <h1 th:text="${phase.title}">Phase</h1>
+    <p class="lead" th:text="${phase.summary}">summary</p>
+    <p class="small" th:text="${#lists.size(phase.lessons)} + ' lessons · ' + ${phase.hours} + ' · ' + ${phase.minutes()} + ' min of reading and coding'"></p>
+
+    <ol class="lesson-list">
+        <li th:each="l : ${phase.lessons}" th:class="${done.contains(l.id)} ? 'done' : ''">
+            <a th:href="${l.url()}">
+                <span class="check" th:text="${done.contains(l.id)} ? '✓' : ${l.number}">1</span>
+                <span class="lesson-text">
+                    <strong th:text="${l.title}">Lesson</strong>
+                    <span th:text="${l.summary}">summary</span>
+                </span>
+                <span class="lesson-meta">
+                    <span th:text="${l.minutes} + ' min'"></span>
+                    <span th:if="${scores[l.id] != null}" th:text="'quiz ' + ${scores[l.id].percent()} + '%'"></span>
+                </span>
+            </a>
+        </li>
+    </ol>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

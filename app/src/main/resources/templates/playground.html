@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('Playground')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container">
+    <h1>Playground</h1>
+    <div th:replace="~{tutor :: status}"></div>
+    <form method="post" action="/admin/reindex" class="inline">
+        <button class="btn link" type="submit">Rebuild semantic index</button>
+    </form>
+
+    <div class="tabs" role="tablist">
+        <button role="tab" class="tab active" data-tab="prompt" aria-selected="true">Prompt lab</button>
+        <button role="tab" class="tab" data-tab="embed" aria-selected="false">Embedding similarity</button>
+        <button role="tab" class="tab" data-tab="rag" aria-selected="false">RAG inspector</button>
+    </div>
+
+    <section class="tab-panel" id="tab-prompt">
+        <p class="small">Send one prompt to one or two models and compare output, latency and token usage (Phase 6–7).
+            Leave model names blank to use the configured default.</p>
+        <form hx-post="/playground/prompt" hx-target="#prompt-out" hx-indicator="#p-ind" method="post" action="/playground/prompt" class="grid-form">
+            <label>System prompt <textarea name="system" rows="2" th:text="${system}"></textarea></label>
+            <label>User message <textarea name="user" rows="4" required>Explain Spring AI's ChatClient to a Spring MVC expert in 5 bullet points.</textarea></label>
+            <div class="row">
+                <label>Model A <input name="modelA" placeholder="default (e.g. llama3.2)"></label>
+                <label>Model B (optional) <input name="modelB" placeholder="e.g. qwen2.5:3b"></label>
+                <label>Temperature <input name="temperature" type="number" min="0" max="2" step="0.1" value="0.7"></label>
+            </div>
+            <button class="btn primary" type="submit">Run</button> <span id="p-ind" class="htmx-indicator small">Calling model…</span>
+        </form>
+        <div id="prompt-out"></div>
+    </section>
+
+    <section class="tab-panel" id="tab-embed" hidden>
+        <p class="small">One sentence per line. Shows the cosine similarity of their embeddings (Phase 4). Paraphrases score high
+            even with no shared words; the offline fallback only measures word overlap — compare the two.</p>
+        <form hx-post="/playground/similarity" hx-target="#embed-out" method="post" action="/playground/similarity" class="grid-form">
+            <textarea name="texts" rows="6" th:text="${defaultTexts}"></textarea>
+            <button class="btn primary" type="submit">Compare</button>
+        </form>
+        <div id="embed-out"></div>
+    </section>
+
+    <section class="tab-panel" id="tab-rag" hidden>
+        <p class="small">Runs the tutor pipeline step by step: retrieve top-k passages, assemble the prompt, generate (Phase 9).</p>
+        <form hx-post="/playground/rag" hx-target="#rag-out" hx-indicator="#r-ind" method="post" action="/playground/rag" class="grid-form">
+            <div class="row">
+                <label class="grow">Question <input name="question" required value="How does HNSW find nearest neighbours?"></label>
+                <label>k <input name="k" type="number" min="1" max="10" value="5"></label>
+            </div>
+            <button class="btn primary" type="submit">Run pipeline</button> <span id="r-ind" class="htmx-indicator small">Running…</span>
+        </form>
+        <div id="rag-out"></div>
+    </section>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

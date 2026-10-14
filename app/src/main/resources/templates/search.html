@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('Search')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container narrow">
+    <h1>Search</h1>
+    <form method="get" action="/search" class="searchbar">
+        <input type="search" name="q" th:value="${q}" placeholder="e.g. attention, HNSW, prompt injection, LoRA" autofocus
+               aria-label="Search query">
+        <select name="mode" aria-label="Search mode">
+            <option th:each="m : ${modes}" th:value="${m}"
+                    th:text="${#strings.capitalize(#strings.toLowerCase(m))}" th:selected="${m == mode}">mode</option>
+        </select>
+        <button class="btn primary" type="submit">Search</button>
+    </form>
+    <p class="small">Keyword = BM25 (Phase 8). Semantic = embeddings + cosine similarity (needs Ollama). Hybrid = both, merged with Reciprocal Rank Fusion.</p>
+
+    <p th:if="${!q.isBlank() && hits.isEmpty()}">No results. Semantic and hybrid modes need the embedding model — try Keyword.</p>
+    <ol class="results">
+        <li th:each="h : ${hits}">
+            <a th:href="${h.url()}"><strong th:text="${h.lesson.title}">Lesson</strong> › <span th:text="${h.section.heading}">Section</span></a>
+            <span class="small" th:text="${#numbers.formatDecimal(h.score, 1, 4)}"></span>
+            <div class="snippet" th:utext="${h.snippetHtml}"></div>
+        </li>
+    </ol>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:fragment="head(title)">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' · AI Engineering in Java'">AI Engineering in Java</title>
+    <script>
+        try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)" id="hl-light">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)" id="hl-dark">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" th:href="@{/app.css}">
+    <script defer src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.4/dist/htmx.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+    <script defer th:src="@{/app.js}"></script>
+</head>
+
+<body>
+
+<header th:fragment="header" class="topbar">
+    <a class="brand" href="/">AI&nbsp;Eng<span>·Java</span></a>
+    <nav>
+        <a href="/">Roadmap</a>
+        <a href="/search">Search</a>
+        <a href="/tutor">Tutor</a>
+        <a href="/playground">Playground</a>
+        <a href="/interview">Interview</a>
+        <a href="/case-studies">Case studies</a>
+        <a href="/glossary">Glossary</a>
+    </nav>
+    <div class="topbar-right">
+        <span class="pill" th:title="${summary.completed} + ' of ' + ${summary.total} + ' lessons complete'"
+              th:text="${summary.percent} + '%'">0%</span>
+        <button class="icon-btn" type="button" onclick="toggleTheme()" aria-label="Toggle dark mode">◐</button>
+    </div>
+</header>
+
+<footer th:fragment="footer" class="footer">
+    <span>AI Engineering From Scratch — Java &amp; Spring Edition. Content lives in <code>content/</code>, code in <code>lessons/</code>.</span>
+</footer>
+
+<!-- Lesson completion toggle (HTMX swaps itself) -->
+<form th:fragment="complete-button" class="complete-form" th:hx-post="${lesson.url() + '/complete'}" hx-swap="outerHTML"
+      th:action="${lesson.url() + '/complete'}" method="post">
+    <button type="submit" th:class="${completed} ? 'btn done' : 'btn primary'"
+            th:text="${completed} ? '✓ Completed — undo' : 'Mark lesson complete'">Mark lesson complete</button>
+</form>
+
+<!-- Quiz grading result -->
+<div th:fragment="quiz-result" class="quiz-result">
+    <p class="score" th:text="'Score: ' + ${score.score} + ' / ' + ${score.total} + ' (' + ${score.percent()} + '%)'">Score</p>
+    <ol>
+        <li th:each="f : ${feedback}" th:class="${f.correct} ? 'ok' : 'bad'">
+            <strong th:text="${f.question.question}">Q</strong>
+            <div th:if="${f.correct}">✓ Correct.</div>
+            <div th:unless="${f.correct}">
+                ✗ <span th:text="${f.chosen == null} ? 'Not answered.' : 'You chose: ' + ${f.question.options[f.chosen]}"></span>
+                Answer: <em th:text="${f.question.options[f.question.answer]}"></em>
+            </div>
+            <div class="why" th:text="${f.question.why}"></div>
+        </li>
+    </ol>
+</div>
+
+<!-- Tutor / RAG inspector answer -->
+<div th:fragment="tutor-answer" class="answer">
+    <div th:if="${answer.completion.ok()}">
+        <div class="prose" th:utext="${answer.completion.html}"></div>
+        <p class="meta">
+            <span th:text="${answer.completion.model}">model</span> ·
+            <span th:text="${answer.completion.millis} + ' ms'"></span>
+            <span th:if="${answer.completion.promptTokens != null}"
+                  th:text="' · ' + ${answer.completion.promptTokens} + ' prompt / ' + ${answer.completion.completionTokens} + ' completion tokens'"></span>
+        </p>
+    </div>
+    <div th:unless="${answer.completion.ok()}" class="notice">
+        <strong>The language model is not reachable</strong>, so here are the passages retrieval found — read them directly.
+        <div class="small" th:text="${answer.completion.error}"></div>
+    </div>
+    <h4>Sources</h4>
+    <ol class="sources">
+        <li th:each="h, i : ${answer.sources}">
+            <a th:href="${h.url()}" th:text="${h.lesson.title} + ' › ' + ${h.section.heading}">source</a>
+            <span class="small" th:text="'score ' + ${#numbers.formatDecimal(h.score, 1, 4)}"></span>
+            <div class="snippet" th:utext="${h.snippetHtml}"></div>
+        </li>
+        <li th:if="${answer.sources.isEmpty()}">No matching passages.</li>
+    </ol>
+    <details th:open="${inspect}">
+        <summary>Inspect the exact prompt sent to the model</summary>
+        <p class="small">System prompt and user message (context + question). This is all the model sees.</p>
+        <pre class="prompt">[system]
+<span th:text="${answer.system}"></span>
+
+[user]
+<span th:text="${answer.prompt}"></span></pre>
+    </details>
+</div>
+
+<!-- Prompt lab result -->
+<div th:fragment="prompt-result" class="compare">
+    <div th:each="c : ${ {a, b} }" th:if="${c != null}" class="card">
+        <div th:if="${c.ok()}">
+            <p class="meta">
+                <strong th:text="${c.model}">model</strong> · <span th:text="${c.millis} + ' ms'"></span>
+                <span th:if="${c.promptTokens != null}" th:text="' · ' + ${c.promptTokens} + ' in / ' + ${c.completionTokens} + ' out tokens'"></span>
+            </p>
+            <div class="prose" th:utext="${c.html}"></div>
+        </div>
+        <div th:unless="${c.ok()}" class="notice" th:text="${c.error}">error</div>
+    </div>
+</div>
+
+<!-- Similarity matrix -->
+<div th:fragment="similarity-result">
+    <p class="small" th:text="${sim.method}">method</p>
+    <div class="table-wrap">
+        <table class="heat">
+            <tr>
+                <th></th>
+                <th th:each="t, i : ${sim.texts}" th:text="${i.count}" th:title="${t}">1</th>
+            </tr>
+            <tr th:each="row, i : ${sim.matrix}">
+                <th class="rowhead" th:text="${i.count} + '. ' + ${sim.texts[i.index]}">text</th>
+                <td th:each="v : ${row}" th:text="${#numbers.formatDecimal(v, 1, 2)}"
+                    th:style="'--v:' + ${v < 0 ? 0 : v}">0.0</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

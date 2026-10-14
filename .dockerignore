@@ -1,0 +1,6 @@
+**/target
+data
+app/data
+.git
+.idea
+**/.venv

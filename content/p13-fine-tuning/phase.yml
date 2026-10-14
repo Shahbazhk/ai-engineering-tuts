@@ -1,0 +1,3 @@
+title: Fine-tuning & Model Customisation
+summary: When to fine-tune, LoRA built from scratch, preparing training data in Java, the (honest) Python training step, quantisation, and serving custom models from Java.
+hours: 8 h

@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: ai-engineering-course
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${COURSE_DB_URL:jdbc:h2:file:./data/course;AUTO_SERVER=TRUE}
+  sql:
+    init:
+      mode: always
+  ai:
+    # Which provider backs each model type: ollama (local, default), openai (or any OpenAI-compatible API), or none.
+    model:
+      chat: ${AI_CHAT_PROVIDER:ollama}
+      embedding: ${AI_EMBEDDING_PROVIDER:ollama}
+      image: none
+      audio:
+        speech: none
+        transcription: none
+      moderation: none
+    ollama:
+      base-url: ${OLLAMA_BASE_URL:http://localhost:11434}
+      chat:
+        model: ${OLLAMA_CHAT_MODEL:llama3.2}
+        # Ollama's default context window is small and SILENTLY truncates longer prompts - RAG context included.
+        num-ctx: ${OLLAMA_NUM_CTX:8192}
+      embedding:
+        model: ${OLLAMA_EMBEDDING_MODEL:nomic-embed-text}
+    openai:
+      api-key: ${OPENAI_API_KEY:not-set}
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com}
+      chat:
+        options:
+          model: ${OPENAI_CHAT_MODEL:gpt-4o-mini}
+      embedding:
+        options:
+          model: ${OPENAI_EMBEDDING_MODEL:text-embedding-3-small}
+
+course:
+  # Directory holding content/ and lessons/. Blank = auto-detect (current dir or its parent).
+  root: ${COURSE_ROOT:}
+  ai:
+    semantic-index-on-startup: true
+    # Instruction prefixes for asymmetric embedding models (nomic-embed-text). Set both to "" for OpenAI models.
+    query-prefix: "${COURSE_QUERY_PREFIX:search_query: }"
+    document-prefix: "${COURSE_DOCUMENT_PREFIX:search_document: }"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics

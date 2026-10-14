@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head(${lesson.title})}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<div class="lesson-layout">
+    <aside class="sidebar">
+        <a class="side-phase" th:href="@{/phases/{id}(id=${phase.id})}" th:text="'Phase ' + ${phase.number} + ' · ' + ${phase.title}">Phase</a>
+        <ol>
+            <li th:each="l : ${phase.lessons}" th:classappend="${l.id == lesson.id} ? 'current'">
+                <a th:href="${l.url()}" th:text="${l.title}">Lesson</a>
+            </li>
+        </ol>
+        <h4>On this page</h4>
+        <ul class="toc">
+            <li th:each="s : ${lesson.sections}" th:if="${!s.anchor.isEmpty()}">
+                <a th:href="'#' + ${s.anchor}" th:text="${s.heading}">Section</a>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="lesson">
+        <p class="crumbs"><a href="/">Roadmap</a> › <a th:href="@{/phases/{id}(id=${phase.id})}" th:text="${phase.title}">Phase</a></p>
+        <h1 th:text="${lesson.title}">Lesson</h1>
+        <p class="lead" th:text="${lesson.summary}">summary</p>
+        <p class="meta">
+            <span th:text="${lesson.minutes} + ' min'"></span>
+            <span th:each="t : ${lesson.tags}" class="tag" th:text="${t}">tag</span>
+        </p>
+        <div class="notice prereq" th:if="${!prereqs.isEmpty()}">
+            <strong>Before this lesson:</strong>
+            <span th:each="p, i : ${prereqs}"><a th:href="${p.url()}" th:text="${p.title}">prereq</a><span th:if="${!i.last}">, </span></span>
+        </div>
+
+        <article class="prose" th:utext="${lesson.html}"></article>
+
+        <section th:if="${!lesson.quiz.isEmpty()}" class="quiz" id="quiz">
+            <h2>Quiz</h2>
+            <p class="small" th:if="${score != null}" th:text="'Best score so far: ' + ${score.score} + '/' + ${score.total}"></p>
+            <form th:hx-post="${lesson.url() + '/quiz'}" hx-target="#quiz-result" hx-swap="innerHTML"
+                  th:action="${lesson.url() + '/quiz'}" method="post">
+                <fieldset th:each="q, qi : ${lesson.quiz}">
+                    <legend th:text="${qi.count} + '. ' + ${q.question}">Question</legend>
+                    <label th:each="o, oi : ${q.options}">
+                        <input type="radio" th:name="'q' + ${qi.index}" th:value="${oi.index}">
+                        <span th:text="${o}">option</span>
+                    </label>
+                </fieldset>
+                <button class="btn primary" type="submit">Check answers</button>
+            </form>
+            <div id="quiz-result" aria-live="polite"></div>
+        </section>
+
+        <section th:if="${!lesson.interview.isEmpty()}" class="interview">
+            <h2>Interview &amp; architecture prep</h2>
+            <details th:each="q : ${lesson.interview}">
+                <summary><span class="tag" th:text="${q.level}">senior</span> <span th:text="${q.question}">Q</span></summary>
+                <div class="answer-text" th:text="${q.answer}">A</div>
+            </details>
+        </section>
+
+        <div class="lesson-footer">
+            <div th:replace="~{fragments :: complete-button}"></div>
+            <div class="pager">
+                <a th:if="${prev != null}" th:href="${prev.url()}" class="btn" th:text="'← ' + ${prev.title}">prev</a>
+                <a th:if="${next != null}" th:href="${next.url()}" class="btn" th:text="${next.title} + ' →'">next</a>
+            </div>
+        </div>
+    </main>
+</div>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

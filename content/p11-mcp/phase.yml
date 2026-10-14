@@ -1,0 +1,3 @@
+title: Model Context Protocol (MCP)
+summary: The open protocol that connects AI hosts to tools and data — concepts, a JSON-RPC server and client from scratch, Spring AI MCP servers and clients, a Liferay MCP server, and MCP security.
+hours: 8 h

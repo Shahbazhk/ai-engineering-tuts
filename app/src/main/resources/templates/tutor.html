@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('AI Tutor')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container narrow">
+    <h1>AI Tutor</h1>
+    <p class="lead">Ask anything about the course. The tutor is the RAG system from Phase 9 pointed at this course:
+        it retrieves lesson passages, puts them in the prompt, and makes the model cite them.</p>
+    <div th:replace="~{tutor :: status}"></div>
+
+    <form hx-post="/tutor" hx-target="#answer" hx-indicator="#thinking" class="ask" method="post" action="/tutor">
+        <textarea name="question" rows="3" required maxlength="4000"
+                  placeholder="e.g. Why does self-attention divide by sqrt(d_k)?" aria-label="Question"></textarea>
+        <button class="btn primary" type="submit">Ask</button>
+        <span id="thinking" class="htmx-indicator small">Thinking…</span>
+    </form>
+    <div id="answer" aria-live="polite"></div>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+
+<div th:fragment="status" class="status-row">
+    <span th:class="${chatAvailable} ? 'dot ok' : 'dot off'"></span>
+    Chat model: <strong th:text="${chatAvailable} ? ${provider} : 'none'">ollama</strong>
+    <span class="sep">|</span>
+    <span th:class="${indexState.name() == 'READY'} ? 'dot ok' : 'dot off'"></span>
+    Semantic index: <strong th:text="${#strings.toLowerCase(indexState)}">ready</strong>
+    <span class="small" th:text="'(' + ${sections} + ' sections)'"></span>
+    <span class="small" th:if="${indexState.name() == 'FAILED'}" th:text="' — ' + ${indexError}"></span>
+</div>
+</body>
+</html>

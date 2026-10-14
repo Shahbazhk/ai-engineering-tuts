@@ -1,0 +1,3 @@
+title: Transformers From Scratch
+summary: Language modelling, attention, positional encodings, transformer blocks, a GPT forward pass with a KV cache, decoding strategies, and how modern LLMs differ.
+hours: 16 h

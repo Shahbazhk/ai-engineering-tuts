@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{fragments :: head('Interview prep')}"></head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+<main class="container narrow">
+    <h1>Interview &amp; architecture question bank</h1>
+    <form method="get" action="/interview" class="searchbar">
+        <select name="phase" aria-label="Phase">
+            <option value="">All phases</option>
+            <option th:each="p : ${nav}" th:value="${p.id}" th:text="${p.number} + '. ' + ${p.title}" th:selected="${p.id == phase}">phase</option>
+        </select>
+        <select name="level" aria-label="Level">
+            <option value="">All levels</option>
+            <option th:each="l : ${levels}" th:value="${l}" th:text="${l}" th:selected="${l == level}">level</option>
+        </select>
+        <button class="btn primary" type="submit">Filter</button>
+    </form>
+    <p class="small" th:text="${#lists.size(bank)} + ' questions. Answer out loud first, then open the model answer.'"></p>
+    <details th:each="e : ${bank}" class="bank">
+        <summary>
+            <span class="tag" th:text="${e.item.level}">senior</span>
+            <span th:text="${e.item.question}">Q</span>
+        </summary>
+        <div class="answer-text" th:text="${e.item.answer}">A</div>
+        <a class="small" th:href="${e.lesson.url()}" th:text="'From: ' + ${e.lesson.title}">lesson</a>
+    </details>
+</main>
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

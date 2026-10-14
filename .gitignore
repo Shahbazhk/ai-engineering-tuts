@@ -1,0 +1,9 @@
+target/
+data/
+app/data/
+*.log
+.idea/
+*.iml
+.vscode/
+lessons/p13-fine-tuning/python/.venv/
+lessons/p13-fine-tuning/python/adapter/
